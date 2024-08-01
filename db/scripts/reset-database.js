@@ -5,50 +5,56 @@ import { pool } from "../index.js";
 // >>> MAKE SURE YOU UNDERSTAND THIS FILE AND WHAT IT'S DOING <<<
 // >>> FEEL FREE TO CHANGE IT TO MAKE YOUR OWN RESOURCES (TABLES AND PROPERTIES) - YOU DON'T HAVE TO USE ALBUMS AND ARTISTS <<<
 
-
-
 async function resetDatabase() {
   try {
     // Drop existing tables if they exist
     await pool.query(`
-        DROP TABLE IF EXISTS artists CASCADE;
-        DROP TABLE IF EXISTS albums CASCADE;
+        DROP TABLE IF EXISTS trainers CASCADE;
+        DROP TABLE IF EXISTS pokemon CASCADE;
     `);
 
-    // Create the artists table
+    // Create the pokemon table
     await pool.query(`
-        CREATE TABLE artists (
+        CREATE TABLE pokemon (
             id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-            name VARCHAR(255) NOT NULL
+            name VARCHAR(255) NOT NULL,
+            type VARCHAR(50) NOT NULL
         );
     `);
 
-    // Create the albums table with a foreign key to the artists table
+    // Create the trainers table with foreign keys to the pokemon table
     await pool.query(`
-        CREATE TABLE albums (
+        CREATE TABLE trainers (
             id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-            title VARCHAR(255) NOT NULL,
-            published_date DATE,
-            artist_id INT REFERENCES artists(id)
+            name VARCHAR(255) NOT NULL,
+            hometown VARCHAR(255) NOT NULL,
+            slot_1 INT REFERENCES pokemon(id),
+            slot_2 INT REFERENCES pokemon(id),
+            slot_3 INT REFERENCES pokemon(id),
+            slot_4 INT REFERENCES pokemon(id),
+            slot_5 INT REFERENCES pokemon(id),
+            slot_6 INT REFERENCES pokemon(id)
         );
     `);
 
-    // Seed the artists table
+    // Seed the pokemon table
     await pool.query(`
-        INSERT INTO artists (name)
+        INSERT INTO pokemon (name, type)
         VALUES 
-            ('Dua Lipa'),
-            ('Jay-Z');
+            ('Pikachu', 'Electric'),
+            ('Charizard', 'Fire/Flying'),
+            ('Bulbasaur', 'Grass/Poison'),
+            ('Squirtle', 'Water'),
+            ('Eevee', 'Normal');
     `);
 
-    // Seed the albums table
+    // Seed the trainers table
     await pool.query(`
-        INSERT INTO albums (title, published_date, artist_id)
+        INSERT INTO trainers (name, hometown, slot_1, slot_2, slot_3, slot_4, slot_5, slot_6)
         VALUES 
-            ('Dua Lipa', '2017-06-02', 1),
-            ('Future Nostalgia', '2020-03-27', 1),
-            ('Reasonable Doubt', '1996-06-25', 2),
-            ('The Blueprint', '2001-09-11', 2);
+            ('Ash Ketchum', 'Pallet Town', 1, 2, NULL, NULL, NULL, NULL),
+            ('Misty', 'Cerulean City', 4, NULL, NULL, NULL, NULL, NULL),
+            ('Brock', 'Pewter City', 3, 5, NULL, NULL, NULL, NULL);
     `);
 
     console.log("Database reset successful");
@@ -59,5 +65,6 @@ async function resetDatabase() {
     await pool.end();
   }
 }
+
 
 await resetDatabase();
