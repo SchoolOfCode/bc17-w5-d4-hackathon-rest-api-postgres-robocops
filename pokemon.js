@@ -1,11 +1,10 @@
-
 // Import the 'pool' object so our helper functions can interact with the PostgreSQL database
 import { pool } from "./db/index.js";
 
 export async function getAllPokemon() {
   const queryText = "SELECT * FROM pokemon";
-  const res = await pool.query(queryText)
-  console.log(res)
+  const res = await pool.query(queryText);
+  console.log(res);
   return res.rows;
 }
 
@@ -27,4 +26,18 @@ export async function updateResourceOneById(id, updates) {
 
 export async function deleteResourceOneById(id) {
   // Query the database to delete the resource and return the deleted resource or null
+}
+
+export async function deletePokemonById(id) {
+  try {
+    const deleteQuery = "DELETE FROM pokemon WHERE id = $1 RETURNING *;";
+    const res = await pool.query(deleteQuery, [id]);
+    if (res.rowCount === 0) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("Error deleting pokemon:", error);
+    throw error;
+  }
 }

@@ -147,17 +147,3 @@ app.listen(PORT, function () {
 });
 
 
-export async function deletePokemonById(id) {
-  try {
-    const deleteQuery = "DELETE FROM pokemon WHERE id = $1 RETURNING *;";
-    const res = await pool.query(deleteQuery, [id]);
-    if (res.rowCount === 0) {
-      
-      return false;
-    }
-    return true; 
-  } catch (error) {
-    console.error('Error deleting pokemon:', error);
-    throw error; 
-  }
-}
