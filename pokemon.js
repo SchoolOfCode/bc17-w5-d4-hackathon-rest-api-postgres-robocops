@@ -16,11 +16,11 @@ export async function getAllPokemonById(id) {
   return res.rows[0] || null;
 }
 
-export async function createResourceOne(resource) {
+export async function createPokemonById(resource) {
   // Query the database to create an resource and return the newly created resource
 }
 
-export async function updateResourceOneById(id, updates) {
+export async function updatePokemonById(id, updates) {
   // Query the database to update the resource and return the newly updated resource or null
 }
 

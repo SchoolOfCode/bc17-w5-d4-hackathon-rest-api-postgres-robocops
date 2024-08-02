@@ -31,7 +31,7 @@ const PORT = process.env.PORT;
 
 app.use(express.json()); // express.json() middleware is used to parse incoming JSON requests
 
-
+app.use(express.static('public'))
 
 
 // Resource One Route Handlers
