@@ -7,7 +7,7 @@ import express from "express";
 import {
   getAllPokemon,
   getAllPokemonById,
-  // createPokemon,
+  createPokemon,
   updatePokemonById,
   deletePokemonById,
 } from "./pokemon.js";
@@ -17,7 +17,7 @@ import {
 import {
   getTrainers,
   getTrainerById,
-  // createTrainerById,
+  createTrainerById,
   updateTrainerById,
   deleteTrainerById,
 } from "./trainers.js";
@@ -78,7 +78,12 @@ app.get("/pokemon/:id", async function (req, res) {
 
 // Endpoint to create a new <resource_one>
 app.post("/pokemon/", async function (req, res) {
-  //createPokemon
+  try {
+    const newPokemon = await createPokemon(req.body);
+    res.status(201).json(newPokemon);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 // Endpoint to update a specific <resource_one> by id
@@ -159,7 +164,12 @@ app.get("/trainer/:id", async function (req, res) {
 
 // Endpoint to create a new <resource_twos>
 app.post("/trainer/", async function (req, res) {
-  //createTrainerById()
+  try {
+    const newTrainer = await createTrainerById(req.body);
+    res.status(201).json(newTrainer);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 // Endpoint to update a specific <resource_twos> by id

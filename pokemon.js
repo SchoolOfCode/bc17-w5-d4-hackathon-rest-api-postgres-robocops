@@ -16,12 +16,18 @@ export async function getAllPokemonById(id) {
   return res.rows[0] || null;
 }
 
-export async function createPokemonById(resource) {
+export async function createPokemon(resource) {
   // Query the database to create an resource and return the newly created resource
+  const queryText = "INSERT INTO pokemon (name, type, level) VALUES ($1, $2, $3) RETURNING *;";
+  const res = await pool.query(queryText, [resource.name, resource.type, resource.level]);
+  return res.rows[0];
 }
 
 export async function updatePokemonById(id, updates) {
   // Query the database to update the resource and return the newly updated resource or null
+  const queryText = "UPDATE pokemon SET name = $1, type = $2, level = $3 WHERE id = $4 RETURNING *;";
+  const res = await pool.query(queryText, [updates.name, updates.type, updates.level, id]);
+  return res.rows[0] || null;
 }
 
 export async function deletePokemonById(id) {

@@ -55,7 +55,10 @@ WHERE trainers.id = $1;`;
 }
 
 export async function createTrainerById(resource) {
-  // Query the database to create an resource and return the newly created resource
+  const queryText = `INSERT INTO trainers (name, hometown, slot_1, slot_2, slot_3, slot_4, slot_5, slot_6) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`;
+  const res = await pool.query(queryText, [resource.name, resource.hometown, resource.slot_1, resource.slot_2, resource.slot_3, resource.slot_4, resource.slot_5, resource.slot_6]);
+
+  return res.rows[0] || null;
 }
 
 export async function updateTrainerById(id, updates) {
@@ -63,5 +66,15 @@ export async function updateTrainerById(id, updates) {
 }
 
 export async function deleteTrainerById(id) {
-  // Query the database to delete the resource and return the deleted resource or null
+  try {
+    const deleteQuery = "DELETE FROM trainer WHERE id = $1 RETURNING *;";
+    const res = await pool.query(deleteQuery, [id]);
+    if (res.rowCount === 0) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("Error deleting Trainer:");
+    throw error;
+  }
 }
