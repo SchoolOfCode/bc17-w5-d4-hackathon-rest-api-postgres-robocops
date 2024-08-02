@@ -63,6 +63,9 @@ export async function createTrainerById(resource) {
 
 export async function updateTrainerById(id, updates) {
   // Query the database to update the resource and return the newly updated resource or null
+  const queryText = `UPDATE trainers SET name = $1, hometown = $2, slot_1 = $3, slot_2 = $4, slot_3 = $5, slot_4 = $6, slot_5 = $7, slot_6 = $8 WHERE id = $9 RETURNING *;`;
+  const res = await pool.query(queryText, [updates.name, updates.hometown, updates.slot_1, updates.slot_2, updates.slot_3, updates.slot_4, updates.slot_5, updates.slot_6, id]);
+  return res.rows[0] || null;
 }
 
 export async function deleteTrainerById(id) {
