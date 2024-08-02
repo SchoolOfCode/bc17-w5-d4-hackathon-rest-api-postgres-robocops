@@ -106,11 +106,35 @@ app.post("/resourcetwo/", async function (req, res) {
 });
 
 // Endpoint to update a specific <resource_twos> by id
-app.patch("/resourcetwo/:id", async function (req, res) {
+app.patch("/resourceone/:id", async function (req, res) {
+  try {
+    const { id } = req.params; 
+    const updates = req.body; 
+    const result = await db.updateResourceOneById(id, updates); 
+    if (result) {
+      res.json(result); 
+    } else {
+      res.status(404).json({ error: "ResourceOne not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});app.patch("/resourcetwo/:id", async function (req, res) {
 });
 
 // Endpoint to delete a specific <resource_twos> by id
-app.delete("/resourcetwo/:id", async function (req, res) {
+app.delete("/resourceone/:id", async function (req, res) {
+  try {
+    const { id } = req.params; 
+    const success = await db.deleteResourceOneById(id);
+    if (success) {
+      res.status(204).send(); 
+    } else {
+      res.status(404).json({ error: "ResourceOne not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 
@@ -121,3 +145,19 @@ app.delete("/resourcetwo/:id", async function (req, res) {
 app.listen(PORT, function () {
   console.log(`Server listening on port ${PORT}`);
 });
+
+
+export async function deletePokemonById(id) {
+  try {
+    const deleteQuery = "DELETE FROM pokemon WHERE id = $1 RETURNING *;";
+    const res = await pool.query(deleteQuery, [id]);
+    if (res.rowCount === 0) {
+      
+      return false;
+    }
+    return true; 
+  } catch (error) {
+    console.error('Error deleting pokemon:', error);
+    throw error; 
+  }
+}
