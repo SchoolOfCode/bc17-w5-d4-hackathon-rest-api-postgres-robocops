@@ -3,9 +3,9 @@
 import { pool } from "./db/index.js";
 
 export async function getAllPokemon() {
-  // Query the database and return all resource ones
   const queryText = "SELECT * FROM pokemon";
   const res = await pool.query(queryText)
+  console.log(res)
   return res.rows;
 }
 
