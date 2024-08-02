@@ -8,7 +8,7 @@ import {
   getAllPokemon,
   getAllPokemonById,
   // createPokemon,
-  //updatePokemonById,
+  updatePokemonById,
   deletePokemonById,
 } from "./pokemon.js";
 
@@ -83,7 +83,15 @@ app.post("/pokemon/", async function (req, res) {
 
 // Endpoint to update a specific <resource_one> by id
 app.patch("/pokemon/:id", async function (req, res) {
-  //updatePokemonById
+  try {
+    const result = await updatePokemonById(req.params.id, req.body);
+    if (!result) {
+      res.status(404).json({ error: "Trainer not found" });
+    }
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Endpoint to delete a specific <resource_one> by id
