@@ -95,8 +95,6 @@ app.delete("/resourceone/:id", async function (req, res) {
 
 // Endpoint to retrieve all <resource_twos>
 app.get("/resourcetwo/", async function (req, res) {
-  const authors = await getAuthors();
-  res.status(200).json({ status: "success", data: authors });
 });
 
 // Endpoint to retrieve a <resource_twos> by id
