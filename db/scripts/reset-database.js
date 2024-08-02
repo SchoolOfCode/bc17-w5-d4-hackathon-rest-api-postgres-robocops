@@ -196,9 +196,9 @@ async function resetDatabase() {
         await pool.query(`
         INSERT INTO trainers (name, hometown, slot_1, slot_2, slot_3, slot_4, slot_5, slot_6)
         VALUES 
-            ('Ash', 'Pallet Town', 1, 2, NULL, NULL, NULL, NULL),
-            ('Misty', 'Cerulean City', 4, NULL, NULL, NULL, NULL, NULL),
-            ('Brock', 'Pewter City', 3, 5, NULL, NULL, NULL, NULL);
+            ('Ash', 'Pallet Town', 1, 2, 35, 32, 89, 45),
+            ('Misty', 'Cerulean City', 4, 100, 64, 43, 125, 150),
+            ('Brock', 'Pewter City', 3, 5, 65, 87, 34, 149);
     `);
 
         console.log("Database reset successful");

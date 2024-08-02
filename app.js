@@ -8,19 +8,19 @@ import {
   getAllPokemon,
   getAllPokemonById,
   // createPokemon,
-  //   updateResourceOneById,
-  //   deleteResourceOneById,
+  //updatePokemonById,
+  deletePokemonById,
 } from "./pokemon.js";
 
 
 // Import your helper functions for your second resource here
-// import {
-//   getResourceTwo,
-//   getResourceTwoById,
-//   createResourceTwo,
-//   updateResourceTwoById,
-//   deleteResourceTwoById,
-// } from "./resource_two.js";
+import {
+  getTrainers,
+  getTrainerById,
+  // createTrainerById,
+  updateTrainerById,
+  deleteTrainerById,
+} from "./trainers.js";
 
 
 
@@ -77,15 +77,30 @@ app.get("/pokemon/:id", async function (req, res) {
 })
 
 // Endpoint to create a new <resource_one>
-app.post("/resourceone/", async function (req, res) {
+app.post("/pokemon/", async function (req, res) {
+  //createPokemon
 });
 
 // Endpoint to update a specific <resource_one> by id
-app.patch("/resourceone/:id", async function (req, res) {
+app.patch("/pokemon/:id", async function (req, res) {
+  //updatePokemonById
 });
 
 // Endpoint to delete a specific <resource_one> by id
-app.delete("/resourceone/:id", async function (req, res) {
+
+app.delete("/pokemon/:id", async function (req, res) {
+  try {
+    const pokemonById = await deletePokemonById(req.params.id);
+    if (!success) {
+      res.status(404).json({ error: "Pokemon not found" });
+    }
+    res.status(200).json({
+      message: "successfully deleted pokemon",
+      data: pokemonById
+    });
+  } catch (error) {
+    res.status(500).json('Server error has occured');
+  }
 });
 
 
@@ -94,52 +109,78 @@ app.delete("/resourceone/:id", async function (req, res) {
 // Resource Two Route Handlers
 
 // Endpoint to retrieve all <resource_twos>
-app.get("/resourcetwo/", async function (req, res) {
+app.get("/trainers/", async function (req, res) {
+  try {
+    const trainers = await getTrainers();
+    //console.log(trainers)
+    res.status(200).json({
+      success: true,
+      data: trainers
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      data: []
+    })
+  }
 });
 
 // Endpoint to retrieve a <resource_twos> by id
-app.get("/resourcetwo/:id", async function (req, res) {
+app.get("/trainer/:id", async function (req, res) {
+  try {
+    const trainerById = await getTrainerById(req.params.id);
+    console.log(trainerById)
+    if (!trainerById) {
+      return res
+        .status(404)
+        .json({ status: "fail", data: { msg: "Trainer not found" } });
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: trainerById
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      data: error.message
+    })
+  }
+
 });
 
 // Endpoint to create a new <resource_twos>
-app.post("/resourcetwo/", async function (req, res) {
+app.post("/trainer/", async function (req, res) {
+  //createTrainerById()
 });
 
 // Endpoint to update a specific <resource_twos> by id
-app.patch("/resourceone/:id", async function (req, res) {
+app.patch("/trainer/:id", async function (req, res) {
   try {
-    const { id } = req.params; 
-    const updates = req.body; 
-    const result = await db.updateResourceOneById(id, updates); 
-    if (result) {
-      res.json(result); 
-    } else {
-      res.status(404).json({ error: "ResourceOne not found" });
+    const result = await updateTrainerById(req.params.id, req.body);
+    if (!result) {
+      res.status(404).json({ error: "Trainer not found" });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});app.patch("/resourcetwo/:id", async function (req, res) {
-});
-
-// Endpoint to delete a specific <resource_twos> by id
-app.delete("/resourceone/:id", async function (req, res) {
-  try {
-    const { id } = req.params; 
-    const success = await db.deleteResourceOneById(id);
-    if (success) {
-      res.status(204).send(); 
-    } else {
-      res.status(404).json({ error: "ResourceOne not found" });
-    }
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-
-
-
+app.delete("/trainer/:id", async function (req, res) {
+  try {
+    const trainerById = await deleteTrainerById(req.params.id);
+    if (!success) {
+      res.status(404).json({ error: "Trainer not found" });
+    }
+    res.status(200).json({
+      message: "successfully deleted Trainer",
+      data: trainerById
+    });
+  } catch (error) {
+    res.status(500).json('Server error has occured');
+  }
+});
 
 // Start the server and listen on the specified port
 app.listen(PORT, function () {

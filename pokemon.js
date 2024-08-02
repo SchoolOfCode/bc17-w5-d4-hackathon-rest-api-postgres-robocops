@@ -24,10 +24,6 @@ export async function updateResourceOneById(id, updates) {
   // Query the database to update the resource and return the newly updated resource or null
 }
 
-export async function deleteResourceOneById(id) {
-  // Query the database to delete the resource and return the deleted resource or null
-}
-
 export async function deletePokemonById(id) {
   try {
     const deleteQuery = "DELETE FROM pokemon WHERE id = $1 RETURNING *;";
