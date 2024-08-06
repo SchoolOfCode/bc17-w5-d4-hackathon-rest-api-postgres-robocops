@@ -55,6 +55,7 @@ WHERE trainers.id = $1;`;
 }
 
 export async function createTrainerById(resource) {
+	console.log(resource);
   const queryText = `INSERT INTO trainers (name, hometown, slot_1, slot_2, slot_3, slot_4, slot_5, slot_6) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`;
   const res = await pool.query(queryText, [resource.name, resource.hometown, resource.slot_1, resource.slot_2, resource.slot_3, resource.slot_4, resource.slot_5, resource.slot_6]);
 

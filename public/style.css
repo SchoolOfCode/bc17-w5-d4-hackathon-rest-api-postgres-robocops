@@ -33,6 +33,8 @@ h1 {
 main {
 	margin-top: 10px;
 	flex-grow: 1;
+	flex-wrap: wrap;
+
 }
 
 #trainers-container {

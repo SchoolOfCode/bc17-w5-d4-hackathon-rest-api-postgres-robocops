@@ -165,6 +165,7 @@ app.get("/trainer/:id", async function (req, res) {
 // Endpoint to create a new <resource_twos>
 app.post("/trainer/", async function (req, res) {
   try {
+		console.log(req.body)
     const newTrainer = await createTrainerById(req.body);
     res.status(201).json(newTrainer);
   } catch (error) {
@@ -204,5 +205,3 @@ app.delete("/trainer/:id", async function (req, res) {
 app.listen(PORT, function () {
   console.log(`Server listening on port ${PORT}`);
 });
-
-
